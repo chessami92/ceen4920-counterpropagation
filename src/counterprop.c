@@ -17,7 +17,7 @@ struct Network {
 };
 
 Network *makeNetwork( int input, int hidden, int output ) {
-    static int weightMatrix[MAX_WEIGHTS];
+    static int weightArray[MAX_WEIGHTS];
     static HiddenLayer hiddenLayer;
     static OutputLayer outputLayer;
     static Network network;
@@ -31,9 +31,19 @@ Network *makeNetwork( int input, int hidden, int output ) {
     network.input = input;
     network.hidden = hidden;
     network.output = output;
-    hiddenLayer.weights = &weightMatrix[0];
-    outputLayer.weights = &weightMatrix[input * hidden];
+
+    randomizeWeights( weightArray );
+    hiddenLayer.weights = &weightArray[0];
+    outputLayer.weights = &weightArray[input * hidden];
 
     return &network;
+}
+
+static void randomizeWeights( int *weights ) {
+    int i;
+
+    for( i = 0; i < MAX_WEIGHTS; ++i ) {
+        weights[i] = rand() - ( RAND_MAX >> 1 );
+    }
 }
 
