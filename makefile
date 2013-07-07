@@ -4,7 +4,7 @@ SRC = src/*.c include/*.h
 TEST = test/*.c
 
 test_all: $(SRC) $(TEST)
-	$(cc) counterprop_test test/counterprop_test.c src/counterprop.c
+	$(cc) counterprop_test test/counterprop_test.c
 	./counterprop_test
 
 clean:

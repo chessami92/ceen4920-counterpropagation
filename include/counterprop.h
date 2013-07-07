@@ -4,20 +4,5 @@ typedef struct Network Network;
 
 #define MAX_WEIGHTS 100
 
-struct Kohonen {
-    int *weights;
-    int winningNode;
-};
-
-struct Grossberg {
-    int *weights;
-};
-
-struct Network {
-    HiddenLayer hiddenLayer;
-    OutputLayer outputLayer;
-    int input, hidden, output;
-};
-
 Network* makeNetwork( int input, int hidden, int output );
 
