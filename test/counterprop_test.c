@@ -5,7 +5,7 @@
 static void makeNetwork_test( void ) {
     Network *network;
 
-    network = makeNetwork( 2, 2, 2 );
+    network = makeNetwork( 10, 5, 10 );
     assert( network != NULL && "Should have properly allocated" );
     assert( network->hiddenLayer.winningNode == -1 && "Should not have a winner yet" );
 
