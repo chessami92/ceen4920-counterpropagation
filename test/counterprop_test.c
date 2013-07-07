@@ -8,6 +8,9 @@ static void makeNetwork_test( void ) {
     network = makeNetwork( 10, 5, 10 );
     assert( network != NULL && "Should have properly allocated" );
     assert( network->hiddenLayer.winningNode == -1 && "Should not have a winner yet" );
+    assert( network->input == 10 );
+    assert( network->hidden == 5 );
+    assert( network->output == 10 );
 
     network = makeNetwork( 10, 7, 5 );
     assert( network == NULL && "Should have not been able to allocate" );

@@ -16,6 +16,7 @@ struct Grossberg {
 struct Network {
     HiddenLayer hiddenLayer;
     OutputLayer outputLayer;
+    int input, hidden, output;
 };
 
 Network* makeNetwork( int input, int hidden, int output );

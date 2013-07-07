@@ -12,6 +12,9 @@ Network *makeNetwork( int input, int hidden, int output ) {
     network.hiddenLayer.weights = &weightMatrix[0];
     network.outputLayer.weights = &weightMatrix[input * hidden];
     network.hiddenLayer.winningNode = -1;
+    network.input = input;
+    network.hidden = hidden;
+    network.output = output;
 
     return &network;
 }
