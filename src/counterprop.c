@@ -15,6 +15,16 @@ int* getOutputs( int *inputs, Network *network ) {
     return &network->outputWeights[winningNode * network->output];
 }
 
+void train( int *inputs, int *desiredOutputs, Network *network ) {
+    int winningNode = findWinningNode( inputs, network );
+
+    updateWeights( network->input, inputs,
+    &network->hiddenWeights[winningNode * network->input] );
+
+    updateWeights( network->output, desiredOutputs,
+    &network->outputWeights[winningNode * network->output] );
+}
+
 static int findWinningNode( int *inputs, Network *network ) {
     int i, j;
     int minimumError, currentError;
@@ -37,6 +47,14 @@ static int findWinningNode( int *inputs, Network *network ) {
     }
 
     return winningNode;
+}
+
+static int updateWeights( int count, int *desired, int *actual ) {
+    int i;
+
+    for( i = 0; i < count; ++i ) {
+        actual[i] = actual[i] + ( ( desired[i] - actual[i] ) >> 1 );
+    }
 }
 
 Network* makeNetwork( int input, int hidden, int output ) {
