@@ -9,6 +9,10 @@ struct Network {
     int input, hidden, output;
 };
 
+static int findWinningNode( int *inputs, Network *network );
+static int updateWeights( int count, int *actual, int *desired );
+static void randomizeWeights( int *weights );
+
 int* getOutputs( int *inputs, Network *network ) {
     int winningNode = findWinningNode( inputs, network );
 
