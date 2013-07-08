@@ -8,15 +8,15 @@ static void makeNetwork_test( void ) {
 
     network = makeNetwork( 10, 5, 10 );
     assert( network != NULL && "Should have properly allocated" );
-    assert( network->hiddenLayer != NULL && "Should have properly allocated" );
-    assert( network->outputLayer != NULL && "Should have properly allocated" );
+    assert( network->hiddenWeights != NULL && "Should have properly allocated" );
+    assert( network->outputWeights != NULL && "Should have properly allocated" );
     assert( network->input == 10 );
     assert( network->hidden == 5 );
     assert( network->output == 10 );
-    assert( network->outputLayer->weights == network->hiddenLayer->weights + 50 );
+    assert( network->outputWeights == network->hiddenWeights + 50 );
     for( i = 0; i < 50; ++i ) {
-        assert( network->hiddenLayer->weights[i] != 0 );
-        assert( network->outputLayer->weights[i] != 0 );
+        assert( network->hiddenWeights[i] != 0 );
+        assert( network->outputWeights[i] != 0 );
     }
 
     network = makeNetwork( 10, 7, 5 );
