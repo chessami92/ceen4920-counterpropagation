@@ -10,6 +10,12 @@ struct Network {
 };
 
 int* getOutputs( int *inputs, Network *network ) {
+    int winningNode = findWinningNode( inputs, network );
+
+    return &network->outputWeights[winningNode * network->output];
+}
+
+static int findWinningNode( int *inputs, Network *network ) {
     int i, j;
     int minimumError, currentError;
     int weight;
@@ -30,7 +36,7 @@ int* getOutputs( int *inputs, Network *network ) {
         }
     }
 
-    return &network->outputWeights[winningNode * network->output];
+    return winningNode;
 }
 
 Network* makeNetwork( int input, int hidden, int output ) {
