@@ -21,12 +21,12 @@ int* getOutputs( int *inputs, Network *network ) {
 
 void train( int *inputs, int *desiredOutputs, Network *network ) {
     int winningNode = findWinningNode( inputs, network );
+    int *winningWeights = &network->hiddenWeights[winningNode * network->input];
+    int *outputWeights = &network->outputWeights[winningNode * network->output];
 
-    updateWeights( network->input, inputs,
-    &network->hiddenWeights[winningNode * network->input] );
+    updateWeights( network->input, inputs, winningWeights );
 
-    updateWeights( network->output, desiredOutputs,
-    &network->outputWeights[winningNode * network->output] );
+    updateWeights( network->output, desiredOutputs, outputWeights );
 }
 
 static int findWinningNode( int *inputs, Network *network ) {
