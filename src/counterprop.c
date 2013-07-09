@@ -10,6 +10,8 @@ struct Network {
 };
 
 static int findWinningNode( int *inputs, Network *network );
+static int* getHiddenWeights( int node, Network *network );
+static int* getOutputWeights( int node, Network *network );
 static int updateWeights( int count, int *actual, int *desired );
 static void randomizeWeights( int *weights );
 
@@ -21,8 +23,8 @@ int* getOutputs( int *inputs, Network *network ) {
 
 void train( int *inputs, int *desiredOutputs, Network *network ) {
     int winningNode = findWinningNode( inputs, network );
-    int *winningWeights = &network->hiddenWeights[winningNode * network->input];
-    int *outputWeights = &network->outputWeights[winningNode * network->output];
+    int *winningWeights = getHiddenWeights( winningNode, network );
+    int *outputWeights = getOutputWeights( winningNode, network );
 
     updateWeights( network->input, inputs, winningWeights );
 
@@ -32,16 +34,16 @@ void train( int *inputs, int *desiredOutputs, Network *network ) {
 static int findWinningNode( int *inputs, Network *network ) {
     int i, j;
     int minimumError, currentError;
-    int weight;
+    int *currentWeights;
     int winningNode;
 
     minimumError = INT_MAX;
 
     for( i = 0; i < network->hidden; ++i ) {
         currentError = 0;
+        currentWeights = getHiddenWeights( i, network );
         for( j = 0; j < network->input; ++j ) {
-            weight = network->hiddenWeights[i * network->input + j];
-            currentError += abs( inputs[j] - weight );
+            currentError += abs( inputs[j] - currentWeights[j] );
         }
 
         if( currentError < minimumError ) {
@@ -51,6 +53,14 @@ static int findWinningNode( int *inputs, Network *network ) {
     }
 
     return winningNode;
+}
+
+static int* getHiddenWeights( int hiddenNode, Network *network ) {
+    return &network->hiddenWeights[hiddenNode * network->input];
+}
+
+static int* getOutputWeights( int hiddenNode, Network *network ) {
+    return &network->outputWeights[hiddenNode * network->output];
 }
 
 static int updateWeights( int count, int *desired, int *actual ) {
