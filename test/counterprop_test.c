@@ -2,11 +2,14 @@
 #include <assert.h>
 #include "../src/counterprop.c"
 
+extern int numInput, numHidden, numOutput;
+
 static void makeNetwork_test( void ) {
     Network *network;
     int i;
 
-    network = makeNetwork( 10, 5, 10 );
+    numInput = 10; numHidden = 5; numOutput = 10;
+    network = makeNetwork();
     assert( network != NULL && "Should have properly allocated" );
     assert( network->hiddenWeights != NULL && "Should have properly allocated" );
     assert( network->outputWeights != NULL && "Should have properly allocated" );
@@ -19,7 +22,8 @@ static void makeNetwork_test( void ) {
         assert( network->outputWeights[i] != 0 );
     }
 
-    network = makeNetwork( 10, 7, 5 );
+    numInput = 10; numHidden = 7; numOutput = 5;
+    network = makeNetwork();
     assert( network == NULL && "Should have not been able to allocate" );
 }
 
@@ -27,7 +31,8 @@ static Network* setupTestNetwork( void ) {
     Network *network;
     int i;
 
-    network = makeNetwork( 2, 2, 2 );
+    numInput = 2; numHidden = 2; numOutput = 2;
+    network = makeNetwork();
 
     for( i = 0; i < 8; ++i ) {
         network->hiddenWeights[i] = i;
