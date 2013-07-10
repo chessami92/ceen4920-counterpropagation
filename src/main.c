@@ -46,7 +46,9 @@ int main( int argc, char *argv[] ) {
 
     network = makeNetwork();
 
-    saveNetwork( network );
+    if( network ) {
+        saveNetwork( network );
+    }
 
     exit( EXIT_SUCCESS );
 }
