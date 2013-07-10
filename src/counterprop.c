@@ -82,3 +82,6 @@ Network* makeNetwork( void ) {
     return &network;
 }
 
+void saveNetwork( Network *network ) {
+    persistNetwork( network->input, network->hidden, network->output, network->hiddenWeights );
+}
