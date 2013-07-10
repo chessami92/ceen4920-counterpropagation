@@ -3,20 +3,13 @@
 #include <assert.h>
 #include "persistence.h"
 
-static char *testFile = "test_definition";
+char *definitionFile = "test_definition";
 
 static void cannotOpenFile_test( void ) {
     int weights[8] = {1, 2, 3, 4, 5, 6, 7, 8};
+    definitionFile = "";
     assert( persistNetwork( 1, 2, 3, weights ) == 0 && "Shouldn't be able to open null file" );
-}
-
-static void initPersistence_test( void ) {
-    char *argv[4];
-    argv[0] = "";
-    argv[1] = "";
-    argv[2] = testFile;
-    argv[3] = "";
-    initPersistence( 4, argv );
+    definitionFile = "test_definition";
 }
 
 static void persistAndLoad_test() {
@@ -50,10 +43,9 @@ static void persistAndLoad_test() {
 
 int main( void ) {
     cannotOpenFile_test();
-    initPersistence_test();
     persistAndLoad_test();
 
-    remove( testFile );
+    remove( definitionFile );
 
     exit( EXIT_SUCCESS );
 }

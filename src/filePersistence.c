@@ -4,29 +4,23 @@
 
 const char *DIMENSION_FORMAT = "InputNodes: %d\nHiddenNodes: %d\nOutputNodes: %d\n";
 
-char *fileName;
+extern char *definitionFile;
 
 static int retrieveLayerWeights( FILE *fd, int rows, int columns, int *weights );
 static void persistLayerWeights( FILE *fd, int rows, int columns, int* weights );
 
-int initPersistence( int argc, char *argv[] ) {
-    fileName = argv[2];
-
-    return 1;
-}
-
 int retrieveNetwork( int *input, int *hidden, int *output, int **hiddenWeights, int **outputWeights ) {
     static int weightArray[MAX_WEIGHTS];
-    FILE *definitionFile;
+    FILE *fd;
 
-    definitionFile = fopen( fileName, "r" );
+    fd = fopen( definitionFile, "r" );
 
-    if( !definitionFile ) {
+    if( !fd ) {
         fprintf( stderr, "ERROR: Could not open the definition file.\n" );
         return 0;
     }
 
-    if( fscanf( definitionFile, DIMENSION_FORMAT, input, hidden, output ) != 3 ) {
+    if( fscanf( fd, DIMENSION_FORMAT, input, hidden, output ) != 3 ) {
         fprintf( stderr, "ERROR: Could not parse the layer definitions.\n" );
         return 0;
     }
@@ -44,16 +38,16 @@ int retrieveNetwork( int *input, int *hidden, int *output, int **hiddenWeights, 
     *hiddenWeights = &weightArray[0];
     *outputWeights = &weightArray[*hidden * *input];
 
-    fscanf( definitionFile, "Hidden Layer:" );
-    if( !retrieveLayerWeights( definitionFile, *hidden, *input, *hiddenWeights ) ) {
+    fscanf( fd, "Hidden Layer:" );
+    if( !retrieveLayerWeights( fd, *hidden, *input, *hiddenWeights ) ) {
         return 0;
     }
-    fscanf( definitionFile, "Output Layer:" );
-    if( !retrieveLayerWeights( definitionFile, *hidden, *output, *outputWeights ) ) {
+    fscanf( fd, "Output Layer:" );
+    if( !retrieveLayerWeights( fd, *hidden, *output, *outputWeights ) ) {
         return 0;
     }
 
-    fclose( definitionFile );
+    fclose( fd );
     return 1;
 }
 
@@ -71,24 +65,24 @@ static int retrieveLayerWeights( FILE *fd, int rows, int columns, int *weights )
 }
 
 int persistNetwork( int input, int hidden, int output, int *weights ) {
-    FILE *definitionFile;
+    FILE *fd;
 
-    definitionFile = fopen( fileName, "w" );
+    fd = fopen( definitionFile, "w" );
 
-    if( !definitionFile ) {
+    if( !fd ) {
         fprintf( stderr, "ERROR: Could not open definition file for writing.\n" );
         return 0;
     }
 
-    fprintf( definitionFile, DIMENSION_FORMAT,
+    fprintf( fd, DIMENSION_FORMAT,
         input, hidden, output );
 
-    fprintf( definitionFile, "Hidden Layer:\n" );
-    persistLayerWeights( definitionFile, hidden, input, weights );
-    fprintf( definitionFile, "Output Layer:\n" );
-    persistLayerWeights( definitionFile, hidden, output, &weights[input * hidden] );
+    fprintf( fd, "Hidden Layer:\n" );
+    persistLayerWeights( fd, hidden, input, weights );
+    fprintf( fd, "Output Layer:\n" );
+    persistLayerWeights( fd, hidden, output, &weights[input * hidden] );
 
-    fclose( definitionFile );
+    fclose( fd );
 
     return 1;
 }
