@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <assert.h>
 #include "persistence.h"
 
@@ -10,7 +11,11 @@ static void cannotOpenFile_test( void ) {
 }
 
 static void initPersistence_test( void ) {
-    char *argv[4] = {"", "", testFile, "" };
+    char *argv[4];
+    argv[0] = "";
+    argv[1] = "";
+    argv[2] = testFile;
+    argv[3] = "";
     initPersistence( 4, argv );
 }
 

@@ -1,4 +1,4 @@
-cc=gcc -Iinclude/ -o
+cc=gcc -Iinclude/ -Wall -Wextra -pedantic -o
 
 SRC = src/*.c include/*.h
 TEST = test/*.c

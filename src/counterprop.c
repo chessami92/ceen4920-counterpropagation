@@ -13,8 +13,7 @@ struct Network {
 static int findWinningNode( int *inputs, Network *network );
 static int* getHiddenWeights( int node, Network *network );
 static int* getOutputWeights( int node, Network *network );
-static int updateWeights( int count, int *actual, int *desired );
-static void randomizeWeights( int *weights );
+static void updateWeights( int count, int *actual, int *desired );
 
 int* getOutputs( int *inputs, Network *network ) {
     int winningNode = findWinningNode( inputs, network );
@@ -64,7 +63,7 @@ static int* getOutputWeights( int hiddenNode, Network *network ) {
     return &network->outputWeights[hiddenNode * network->output];
 }
 
-static int updateWeights( int count, int *desired, int *actual ) {
+static void updateWeights( int count, int *desired, int *actual ) {
     int i;
 
     for( i = 0; i < count; ++i ) {

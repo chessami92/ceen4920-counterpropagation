@@ -18,7 +18,6 @@ int initPersistence( int argc, char *argv[] ) {
 int retrieveNetwork( int *input, int *hidden, int *output, int **hiddenWeights, int **outputWeights ) {
     static int weightArray[MAX_WEIGHTS];
     FILE *definitionFile;
-    char throwAway[20];
 
     definitionFile = fopen( fileName, "r" );
 
@@ -37,7 +36,7 @@ int retrieveNetwork( int *input, int *hidden, int *output, int **hiddenWeights, 
         return 0;
     }
 
-    if( !( input > 0 && hidden > 0 && output > 0 ) ) {
+    if( !( *input > 0 && *hidden > 0 && *output > 0 ) ) {
         fprintf( stderr, "ERROR: Cannot have 0 for input, hidden nodes, or output nodes.\n" );
         return 0;
     }
