@@ -3,6 +3,8 @@
 #include <assert.h>
 #include "persistence.h"
 
+extern char *definitionFile;
+
 char *definitionFile = "test_definition";
 
 static void cannotOpenFile_test( void ) {
