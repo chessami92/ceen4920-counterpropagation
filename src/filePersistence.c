@@ -15,7 +15,8 @@ int initPersistence( int argc, char *argv[] ) {
     return 1;
 }
 
-int retrieveNetwork( int *input, int *hidden, int *output, int *weights ) {
+int retrieveNetwork( int *input, int *hidden, int *output, int **hiddenWeights, int **outputWeights ) {
+    static int weightArray[MAX_WEIGHTS];
     FILE *definitionFile;
     char throwAway[20];
 
@@ -31,17 +32,25 @@ int retrieveNetwork( int *input, int *hidden, int *output, int *weights ) {
         return 0;
     }
 
+    if( *input * *hidden + *hidden * *output > MAX_WEIGHTS ) {
+        fprintf( stderr, "ERROR: Network too large. Adjust MAX_WEIGHTS if necessary." );
+        return 0;
+    }
+
     if( !( input > 0 && hidden > 0 && output > 0 ) ) {
         fprintf( stderr, "ERROR: Cannot have 0 for input, hidden nodes, or output nodes.\n" );
         return 0;
     }
 
+    *hiddenWeights = &weightArray[0];
+    *outputWeights = &weightArray[*hidden * *input];
+
     fscanf( definitionFile, "Hidden Layer:" );
-    if( !retrieveLayerWeights( definitionFile, *hidden, *input, weights ) ) {
+    if( !retrieveLayerWeights( definitionFile, *hidden, *input, *hiddenWeights ) ) {
         return 0;
     }
     fscanf( definitionFile, "Output Layer:" );
-    if( !retrieveLayerWeights( definitionFile, *hidden, *output, &weights[*hidden * *input] ) ) {
+    if( !retrieveLayerWeights( definitionFile, *hidden, *output, *outputWeights ) ) {
         return 0;
     }
 

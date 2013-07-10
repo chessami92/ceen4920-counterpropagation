@@ -16,6 +16,7 @@ static void initPersistence_test( void ) {
 
 static void persistAndLoad_test() {
     int weights[8];
+    int *hiddenWeights, *outputWeights;
     int input = 1, hidden = 2, output = 3;
     int i;
 
@@ -30,12 +31,15 @@ static void persistAndLoad_test() {
     for( i = 0; i < 8; ++i ) {
         weights[i] = 0;
     }
-    assert( retrieveNetwork( &input, &hidden, &output, weights ) == 1 );
+    assert( retrieveNetwork( &input, &hidden, &output, &hiddenWeights, &outputWeights ) == 1 );
     assert( input == 1 && "Input should be re-initialized" );
     assert( hidden == 2 && "Hidden should be re-initialized" );
     assert( output == 3 && "Output should be re-initialized" );
-    for( i = 0; i < 8; ++i ) {
-        assert( weights[i] == i && "Weights should be re-initialized" );
+    for( i = 0; i < 2; ++i ) {
+        assert( hiddenWeights[i] == i && "Weights should be re-initialized" );
+    }
+    for( i = 2; i < 8; ++i ) {
+        assert( outputWeights[i - 2] == i && "Weights should be re-initialized" );
     }
 }
 
