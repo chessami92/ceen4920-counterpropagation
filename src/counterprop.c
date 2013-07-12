@@ -4,12 +4,6 @@
 #include "counterprop.h"
 #include "persistence.h"
 
-struct Network {
-    int *hiddenWeights;
-    int *outputWeights;
-    int input, hidden, output;
-};
-
 static int findWinningNode( int *inputs, Network *network );
 static int* getHiddenWeights( int node, Network *network );
 static int* getOutputWeights( int node, Network *network );
