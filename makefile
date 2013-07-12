@@ -18,8 +18,10 @@ file_based: $(SRC)
 test_all: $(SRC) $(TEST)
 	$(cc) counterprop_test test/counterprop_test.c test/testPersistence.c
 	$(cc) filePersistence_test src/filePersistence.c test/filePersistence_test.c
+	$(cc) rgbInput_test src/counterprop.c src/rgbInput.c test/rgbInput_test.c test/testPersistence.c
 	./counterprop_test
 	./filePersistence_test
+	./rgbInput_test
 
 clean:
 	rm -f *.exe *.stackdump
