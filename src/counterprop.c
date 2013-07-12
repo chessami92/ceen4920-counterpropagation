@@ -71,6 +71,14 @@ static void updateWeights( int count, int *desired, int *actual ) {
     }
 }
 
+int getNumInputs( Network *network ) {
+    return network->input;
+}
+
+int getNumOutputs( Network *network ) {
+    return network->output;
+}
+
 Network* makeNetwork( void ) {
     static Network network;
 
