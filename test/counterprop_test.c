@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <assert.h>
-#include "../src/counterprop.c"
+#include "counterprop.h"
 
 extern int numInput, numHidden, numOutput;
 
