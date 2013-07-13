@@ -1,4 +1,4 @@
-int populateNextTestCase( Network *network, int *inputs, int *outputs );
+int populateNextTestCase( Network *network );
 
 extern const int NEW_INPUT;
 extern const int INPUT_WRAPPED;

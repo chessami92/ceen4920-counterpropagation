@@ -74,21 +74,10 @@ static void train_test( void ) {
     && "Should have updated the Grossberg layer weights" );
 }
 
-static void getNumInputsAndOutputs_test( void ) {
-    Network *network;
-
-    numInput = 1; numHidden = 2; numOutput = 3;
-    network = makeNetwork();
-
-    assert( getNumInputs( network ) == 1 && "Should have one input" );
-    assert( getNumOutputs( network ) == 3 && "Should have three outputs" );
-}
-
 int main( void ) {
     makeNetwork_test();
     getOutputs_test();
     train_test();
-    getNumInputsAndOutputs_test();
 
     exit( EXIT_SUCCESS );
 }

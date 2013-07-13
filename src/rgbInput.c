@@ -6,20 +6,16 @@ const int NEW_INPUT = 1;
 const int INPUT_WRAPPED = 0;
 const int SEEK_FAILED = -1;
 
-int populateNextTestCase( Network *network, int *inputs, int *outputs ) {
+int populateNextTestCase( Network *network ) {
     static int testCaseCount = 0;
-    int input, output;
     int i;
 
-    input = getNumInputs( network );
-    output = getNumOutputs( network );
-
-    for( i = 0; i < input; ++i ) {
-        inputs[i] = rand() % 256;
+    for( i = 0; i < network->input; ++i ) {
+        network->testInputs[i] = rand() % 256;
     }
 
-    for( i = 0; i < output; ++i ) {
-        outputs[0] = 0;
+    for( i = 0; i < network->output; ++i ) {
+        network->testOutputs[i] = 0;
     }
 
     ++testCaseCount;

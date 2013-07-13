@@ -13,9 +13,11 @@ static void populateNextTestCase_test( void ) {
 
     numInput = 3; numHidden = 10; numOutput = 1;
     network = makeNetwork();
+    network->testInputs = inputs;
+    network->testOutputs = outputs;
 
     for( i = 0; i < 10000; ++i ) {
-        populateNextTestCase( network, inputs, outputs );
+        populateNextTestCase( network );
         for( j = 0; j < 3; ++j ) {
             assert( inputs[j] < 256 );
         }
