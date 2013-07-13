@@ -60,7 +60,13 @@ static int findWinningNode( Network *network ) {
 }
 
 static int* getHiddenWeights( int hiddenNode, Network *network ) {
-    return &network->hiddenWeights[hiddenNode * network->input];
+    if( hiddenNode < 0 ) {
+        return getHiddenWeights( hiddenNode + network->hidden, network );
+    } else if( hiddenNode >= network->hidden ) {
+        return getHiddenWeights( hiddenNode - network->hidden, network );
+    } else {
+        return &network->hiddenWeights[hiddenNode * network->input];
+    }
 }
 
 static int* getOutputWeights( int hiddenNode, Network *network ) {
