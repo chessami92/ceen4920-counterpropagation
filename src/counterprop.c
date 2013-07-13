@@ -5,29 +5,29 @@
 #include "counterprop.h"
 #include "persistence.h"
 
-static int findWinningNode( int *inputs, Network *network );
+static int findWinningNode( Network *network );
 static int* getHiddenWeights( int node, Network *network );
 static int* getOutputWeights( int node, Network *network );
-static void updateWeights( int count, int *actual, int *desired );
+static void updateWeights( int count, int *desired, int *actual );
 static void randomizeWeights( int *weights );
 
-int* getOutputs( int *inputs, Network *network ) {
-    int winningNode = findWinningNode( inputs, network );
+int* getOutputs( Network *network ) {
+    int winningNode = findWinningNode( network );
 
     return &network->outputWeights[winningNode * network->output];
 }
 
-void train( int *inputs, int *desiredOutputs, Network *network ) {
-    int winningNode = findWinningNode( inputs, network );
+void train( Network *network ) {
+    int winningNode = findWinningNode( network );
     int *winningWeights = getHiddenWeights( winningNode, network );
     int *outputWeights = getOutputWeights( winningNode, network );
 
-    updateWeights( network->input, inputs, winningWeights );
+    updateWeights( network->input, network->testInputs, winningWeights );
 
-    updateWeights( network->output, desiredOutputs, outputWeights );
+    updateWeights( network->output, network->testOutputs, outputWeights );
 }
 
-static int findWinningNode( int *inputs, Network *network ) {
+static int findWinningNode( Network *network ) {
     int i, j;
     int minimumError, currentError;
     int *currentWeights;
@@ -39,7 +39,7 @@ static int findWinningNode( int *inputs, Network *network ) {
         currentError = 0;
         currentWeights = getHiddenWeights( i, network );
         for( j = 0; j < network->input; ++j ) {
-            currentError += abs( inputs[j] - currentWeights[j] );
+            currentError += abs( network->testInputs[j] - currentWeights[j] );
         }
 
         if( currentError < minimumError ) {

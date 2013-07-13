@@ -42,30 +42,29 @@ static Network* setupTestNetwork( void ) {
 
 static void getOutputs_test( void ) {
     Network *network;
-    int inputs[2], *outputs;
+    int *outputs;
 
     network = setupTestNetwork();
 
-    inputs[0] = 0; inputs[1] = 1;
-    outputs = getOutputs( inputs, network );
+    network->testInputs[0] = 0; network->testInputs[1] = 1;
+    outputs = getOutputs( network );
     assert( outputs != NULL && "Should have had some outputs returned" );
     assert( outputs[0] == 4 && outputs[1] == 5 && "Wrong outputs returned" );
 
-    inputs[0] = 2; inputs[1] = 3;
-    outputs = getOutputs( inputs, network );
+    network->testInputs[0] = 2; network->testInputs[1] = 3;
+    outputs = getOutputs( network );
     assert( outputs != NULL && "Should have had some outputs returned" );
     assert( outputs[0] == 6 && outputs[1] == 7 && "Wrong outputs returned" );
 }
 
 static void train_test( void ) {
     Network *network;
-    int inputs[2], outputs[2];
 
     network = setupTestNetwork();
 
-    inputs[0] = 4; inputs[1] = 5;
-    outputs[0] = 8; outputs[1] = 9;
-    train( inputs, outputs, network );
+    network->testInputs[0] = 4; network->testInputs[1] = 5;
+    network->testOutputs[0] = 8; network->testOutputs[1] = 9;
+    train( network );
 
     assert( network->hiddenWeights[2] == 3 && network->hiddenWeights[3] == 4
     && "Should have updated the Kohonen layer weights" );

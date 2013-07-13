@@ -8,8 +8,8 @@ struct Network {
     int *testInputs, *testOutputs;
 };
 
-int* getOutputs( int *inputs, Network *network );
-void train( int *inputs, int *desiredOutputs, Network *network );
+int* getOutputs( Network *network );
+void train( Network *network );
 Network* makeNetwork( int input, int hidden, int output );
 void saveNetwork( Network *network );
 
