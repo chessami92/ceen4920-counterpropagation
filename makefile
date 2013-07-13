@@ -16,9 +16,9 @@ file_based: $(SRC)
 	$(cc) file_based $(CORE) $(FILE_BASED)
 
 test_all: $(SRC) $(TEST)
-	$(cc) counterprop_test src/counterprop.c test/counterprop_test.c test/testPersistence.c
+	$(cc) counterprop_test src/counterprop.c test/counterprop_test.c
 	$(cc) filePersistence_test src/filePersistence.c test/filePersistence_test.c
-	$(cc) rgbInput_test src/counterprop.c src/rgbInput.c test/rgbInput_test.c test/testPersistence.c
+	$(cc) rgbInput_test src/counterprop.c src/rgbInput.c test/rgbInput_test.c
 	./counterprop_test
 	./filePersistence_test
 	./rgbInput_test
