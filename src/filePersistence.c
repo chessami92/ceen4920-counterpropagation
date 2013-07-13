@@ -45,6 +45,8 @@ Network* retrieveNetwork( void ) {
 
     fclose( fd );
     return network;
+}
+
 static int retrieveLayerWeights( FILE *fd, int rows, int columns, int *weights ) {
     int i;
 
