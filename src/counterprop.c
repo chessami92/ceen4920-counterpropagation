@@ -9,6 +9,7 @@ static int findWinningNode( int *inputs, Network *network );
 static int* getHiddenWeights( int node, Network *network );
 static int* getOutputWeights( int node, Network *network );
 static void updateWeights( int count, int *actual, int *desired );
+static void randomizeWeights( int *weights );
 
 int* getOutputs( int *inputs, Network *network ) {
     int winningNode = findWinningNode( inputs, network );
@@ -71,14 +72,27 @@ Network* makeNetwork( int input, int hidden, int output ) {
     static int weightArray[MAX_WEIGHTS];
 
     if( input * hidden + hidden * output + input + output > MAX_WEIGHTS ) {
-        fprintf( stderr, "ERROR: Network too large. Adjust MAX_WEIGHTS if necessary." );
+        fprintf( stderr, "ERROR: Network too large. Adjust MAX_WEIGHTS if necessary.\n" );
         return NULL;
     }
 
+    randomizeWeights( weightArray );
+
+    network.input = input;
+    network.hidden = hidden;
+    network.output = output;
     network.hiddenWeights = &weightArray[0];
     network.outputWeights = &network.hiddenWeights[hidden * input];
     network.testInputs = &network.outputWeights[hidden * output];
     network.testOutputs = &network.testInputs[input];
 
     return &network;
+}
+
+static void randomizeWeights( int *weights ) {
+    int i;
+
+    for( i = 0; i < MAX_WEIGHTS; ++i ) {
+        weights[i] = rand() - ( RAND_MAX >> 1 );
+    }
 }

@@ -10,10 +10,14 @@ static void makeNetwork_test( void ) {
     assert( network != NULL && "Should have properly allocated" );
     assert( network->hiddenWeights != NULL && "Should have properly allocated" );
     assert( network->outputWeights != NULL && "Should have properly allocated" );
-    assert( network->input == 10 );
+    assert( network->testInputs != NULL && "Should have properly allocated" );
+    assert( network->testOutputs != NULL && "Should have properly allocated" );
+    assert( network->input == 8 );
     assert( network->hidden == 5 );
-    assert( network->output == 10 );
-    assert( network->outputWeights == network->hiddenWeights + 50 );
+    assert( network->output == 8 );
+    assert( network->outputWeights == network->hiddenWeights + 40 );
+    assert( network->testInputs == network->hiddenWeights + 80 );
+    assert( network->testOutputs == network->hiddenWeights + 88 );
     for( i = 0; i < 50; ++i ) {
         assert( network->hiddenWeights[i] != 0 );
         assert( network->outputWeights[i] != 0 );
