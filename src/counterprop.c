@@ -66,10 +66,9 @@ static void updateWeights( int count, int *desired, int *actual ) {
     }
 }
 
-Network* makeNetwork( void ) {
+Network* makeNetwork( int input, int hidden, int output ) {
     static Network network;
     static int weightArray[MAX_WEIGHTS];
-    int input = 1, hidden = 1, output = 1;
 
     if( input * hidden + hidden * output + input + output > MAX_WEIGHTS ) {
         fprintf( stderr, "ERROR: Network too large. Adjust MAX_WEIGHTS if necessary." );

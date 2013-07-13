@@ -11,8 +11,7 @@ static void populateNextTestCase_test( void ) {
     int inputs[3], outputs[1];
     int i, j;
 
-    numInput = 3; numHidden = 10; numOutput = 1;
-    network = makeNetwork();
+    network = makeNetwork( 3, 10, 1 );
     network->testInputs = inputs;
     network->testOutputs = outputs;
 

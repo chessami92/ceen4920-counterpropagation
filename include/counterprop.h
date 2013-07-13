@@ -10,6 +10,6 @@ struct Network {
 
 int* getOutputs( int *inputs, Network *network );
 void train( int *inputs, int *desiredOutputs, Network *network );
-Network* makeNetwork( void );
+Network* makeNetwork( int input, int hidden, int output );
 void saveNetwork( Network *network );
 
