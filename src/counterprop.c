@@ -8,7 +8,7 @@
 static int findWinningNode( Network *network );
 static int* getHiddenWeights( int node, Network *network );
 static int* getOutputWeights( int node, Network *network );
-static void updateWeights( int count, int *desired, int *actual );
+static void updateWeights( int count, int learningRate, int *desired, int *actual );
 static void randomizeWeights( int *weights );
 
 int* getOutputs( Network *network ) {
@@ -17,14 +17,14 @@ int* getOutputs( Network *network ) {
     return &network->outputWeights[winningNode * network->output];
 }
 
-void train( Network *network ) {
+void train( Network *network, int learningRate ) {
     int winningNode = findWinningNode( network );
     int *winningWeights = getHiddenWeights( winningNode, network );
     int *outputWeights = getOutputWeights( winningNode, network );
 
-    updateWeights( network->input, network->testInputs, winningWeights );
+    updateWeights( network->input, learningRate, network->testInputs, winningWeights );
 
-    updateWeights( network->output, network->testOutputs, outputWeights );
+    updateWeights( network->output, learningRate, network->testOutputs, outputWeights );
 }
 
 static int findWinningNode( Network *network ) {
@@ -59,11 +59,11 @@ static int* getOutputWeights( int hiddenNode, Network *network ) {
     return &network->outputWeights[hiddenNode * network->output];
 }
 
-static void updateWeights( int count, int *desired, int *actual ) {
+static void updateWeights( int count, int learningRate, int *desired, int *actual ) {
     int i;
 
     for( i = 0; i < count; ++i ) {
-        actual[i] = actual[i] + ( ( desired[i] - actual[i] ) >> 1 );
+        actual[i] = actual[i] + ( ( desired[i] - actual[i] ) >> learningRate );
     }
 }
 

@@ -9,7 +9,7 @@ struct Network {
 };
 
 int* getOutputs( Network *network );
-void train( Network *network );
+void train( Network *network, int learningRate );
 Network* makeNetwork( int input, int hidden, int output );
 void saveNetwork( Network *network );
 
