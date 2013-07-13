@@ -20,9 +20,17 @@ int* getOutputs( Network *network ) {
 void train( Network *network, int learningRate ) {
     int winningNode = findWinningNode( network );
     int *winningWeights = getHiddenWeights( winningNode, network );
+    int *winningNeighbors[2];
     int *outputWeights = getOutputWeights( winningNode, network );
+    int i;
+
+    winningNeighbors[0] = getHiddenWeights( winningNode - 1, network );
+    winningNeighbors[1] = getHiddenWeights( winningNode + 1, network );
 
     updateWeights( network->input, learningRate, network->testInputs, winningWeights );
+    for( i = 0; i < 2; ++i ) {
+        updateWeights( network->input, learningRate, network->testInputs, winningNeighbors[i] );
+    }
 
     updateWeights( network->output, learningRate, network->testOutputs, outputWeights );
 }
