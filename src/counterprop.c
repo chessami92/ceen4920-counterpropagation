@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 #include <limits.h>
 #include "counterprop.h"
@@ -67,11 +68,18 @@ static void updateWeights( int count, int *desired, int *actual ) {
 
 Network* makeNetwork( void ) {
     static Network network;
+    static int weightArray[MAX_WEIGHTS];
+    int input = 1, hidden = 1, output = 1;
 
-    if( !retrieveNetwork( &network.input, &network.hidden, &network.output,
-    &network.hiddenWeights, &network.outputWeights ) ) {
+    if( input * hidden + hidden * output + input + output > MAX_WEIGHTS ) {
+        fprintf( stderr, "ERROR: Network too large. Adjust MAX_WEIGHTS if necessary." );
         return NULL;
     }
+
+    network.hiddenWeights = &weightArray[0];
+    network.outputWeights = &network.hiddenWeights[hidden * input];
+    network.testInputs = &network.outputWeights[hidden * output];
+    network.testOutputs = &network.testInputs[input];
 
     return &network;
 }
