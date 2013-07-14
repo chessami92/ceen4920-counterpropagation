@@ -1,6 +1,15 @@
 typedef struct Network Network;
 
-int* getOutputs( int *inputs, Network *network );
-void train( int *inputs, int *desiredOutputs, Network *network );
-Network* makeNetwork( void );
+#define MAX_WEIGHTS 500
+
+struct Network {
+    int input, hidden, output;
+    int *hiddenWeights, *outputWeights;
+    int *testInputs, *testOutputs;
+};
+
+int* getOutputs( Network *network );
+void train( Network *network, int learningRate );
+Network* makeNetwork( int input, int hidden, int output );
+void saveNetwork( Network *network );
 

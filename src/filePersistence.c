@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "counterprop.h"
 #include "persistence.h"
 
 const char *DIMENSION_FORMAT = "InputNodes: %d\nHiddenNodes: %d\nOutputNodes: %d\n";
@@ -9,46 +10,41 @@ extern char *definitionFile;
 static int retrieveLayerWeights( FILE *fd, int rows, int columns, int *weights );
 static void persistLayerWeights( FILE *fd, int rows, int columns, int* weights );
 
-int retrieveNetwork( int *input, int *hidden, int *output, int **hiddenWeights, int **outputWeights ) {
-    static int weightArray[MAX_WEIGHTS];
+Network* retrieveNetwork( void ) {
+    Network *network;
+    int input, hidden, output;
     FILE *fd;
 
     fd = fopen( definitionFile, "r" );
 
     if( !fd ) {
         fprintf( stderr, "ERROR: Could not open the definition file.\n" );
-        return 0;
+        return NULL;
     }
 
-    if( fscanf( fd, DIMENSION_FORMAT, input, hidden, output ) != 3 ) {
+    if( fscanf( fd, DIMENSION_FORMAT, &input, &hidden, &output ) != 3 ) {
         fprintf( stderr, "ERROR: Could not parse the layer definitions.\n" );
-        return 0;
+        return NULL;
     }
 
-    if( *input * *hidden + *hidden * *output > MAX_WEIGHTS ) {
-        fprintf( stderr, "ERROR: Network too large. Adjust MAX_WEIGHTS if necessary." );
-        return 0;
+    if( input <= 0 || hidden <= 0 || output <= 0 ) {
+        fprintf( stderr, "ERROR: Must have positive number of input, hidden, and output nodes.\n" );
+        return NULL;
     }
 
-    if( !( *input > 0 && *hidden > 0 && *output > 0 ) ) {
-        fprintf( stderr, "ERROR: Cannot have 0 for input, hidden nodes, or output nodes.\n" );
-        return 0;
-    }
-
-    *hiddenWeights = &weightArray[0];
-    *outputWeights = &weightArray[*hidden * *input];
+    network = makeNetwork( input, hidden, output );
 
     fscanf( fd, "Hidden Layer:" );
-    if( !retrieveLayerWeights( fd, *hidden, *input, *hiddenWeights ) ) {
-        return 0;
+    if( !retrieveLayerWeights( fd, hidden, input, network->hiddenWeights ) ) {
+        return NULL;
     }
     fscanf( fd, "Output Layer:" );
-    if( !retrieveLayerWeights( fd, *hidden, *output, *outputWeights ) ) {
-        return 0;
+    if( !retrieveLayerWeights( fd, hidden, output, network->outputWeights ) ) {
+        return NULL;
     }
 
     fclose( fd );
-    return 1;
+    return network;
 }
 
 static int retrieveLayerWeights( FILE *fd, int rows, int columns, int *weights ) {
@@ -64,8 +60,13 @@ static int retrieveLayerWeights( FILE *fd, int rows, int columns, int *weights )
     return 1;
 }
 
-int persistNetwork( int input, int hidden, int output, int *weights ) {
+int persistNetwork( Network *network ) {
     FILE *fd;
+
+    if( !network ) {
+        fprintf( stderr, "ERROR: Cannot save null network.\n" );
+        return 0;
+    }
 
     fd = fopen( definitionFile, "w" );
 
@@ -74,13 +75,12 @@ int persistNetwork( int input, int hidden, int output, int *weights ) {
         return 0;
     }
 
-    fprintf( fd, DIMENSION_FORMAT,
-        input, hidden, output );
+    fprintf( fd, DIMENSION_FORMAT, network->input, network->hidden, network->output );
 
     fprintf( fd, "Hidden Layer:\n" );
-    persistLayerWeights( fd, hidden, input, weights );
+    persistLayerWeights( fd, network->hidden, network->input, network->hiddenWeights );
     fprintf( fd, "Output Layer:\n" );
-    persistLayerWeights( fd, hidden, output, &weights[input * hidden] );
+    persistLayerWeights( fd, network->hidden, network->output, network->outputWeights );
 
     fclose( fd );
 
