@@ -23,7 +23,7 @@ static void makeNetwork_test( void ) {
         assert( network->outputWeights[i] != 0 );
     }
 
-    network = makeNetwork( 10, 5, 10 );
+    network = makeNetwork( 5, 50, 5 );
     assert( network == NULL && "Should have not been able to allocate" );
 }
 

@@ -1,6 +1,6 @@
 typedef struct Network Network;
 
-#define MAX_WEIGHTS 100
+#define MAX_WEIGHTS 500
 
 struct Network {
     int input, hidden, output;
