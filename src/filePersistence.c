@@ -63,6 +63,11 @@ static int retrieveLayerWeights( FILE *fd, int rows, int columns, int *weights )
 int persistNetwork( Network *network ) {
     FILE *fd;
 
+    if( !network ) {
+        fprintf( stderr, "ERROR: Cannot save null network.\n" );
+        return 0;
+    }
+
     fd = fopen( definitionFile, "w" );
 
     if( !fd ) {
