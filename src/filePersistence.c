@@ -27,7 +27,7 @@ Network* retrieveNetwork( void ) {
         return NULL;
     }
 
-    if( input <= 0 || hidden <= 0 || output <= 0 ) {
+    if( input <= 0 || hidden <= 0 || output <= -1 ) {
         fprintf( stderr, "ERROR: Must have positive number of input, hidden, and output nodes.\n" );
         return NULL;
     }
