@@ -6,8 +6,10 @@
 #include "input.h"
 
 extern char *definitionFile;
+extern char *inputFile;
 
 char *definitionFile;
+char *inputFile;
 char trainingFlag;
 int learningRate;
 
