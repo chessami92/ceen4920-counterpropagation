@@ -21,6 +21,9 @@ static int processArguments( int argc, char *argv[] ) {
                 case 'd':
                     definitionFile = argv[i + 1];
                     break;
+                case 'i':
+                    inputFile = argv[i + 1];
+                    break;
                 case 'l':
                     learningRate = atoi( argv[i + 1] );
                     break;
