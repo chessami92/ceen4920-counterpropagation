@@ -3,7 +3,7 @@ cc=gcc -Iinclude/ -Wall -Wextra -pedantic -o
 SRC = src/*.c include/*.h
 TEST = test/*.c
 
-_CORE = main.c counterprop.c
+_CORE = main.c counterprop.c rgbInput.c
 CORE = $(patsubst %,src/%,$(_CORE))
 
 _FILE_BASED = filePersistence.c

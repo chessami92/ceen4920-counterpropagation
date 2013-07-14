@@ -1,12 +1,15 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "counterprop.h"
 #include "persistence.h"
+#include "input.h"
 
 extern char *definitionFile;
 
 char *definitionFile;
 char trainingFlag;
+int learningRate;
 
 static int processArguments( int argc, char *argv[] ) {
     int i;
@@ -15,6 +18,9 @@ static int processArguments( int argc, char *argv[] ) {
             switch( argv[i][1] ) {
                 case 'd':
                     definitionFile = argv[i + 1];
+                    break;
+                case 'l':
+                    learningRate = atoi( argv[i + 1] );
                     break;
                 case 'r':
                     trainingFlag = 0;
@@ -38,17 +44,25 @@ static int processArguments( int argc, char *argv[] ) {
 
 int main( int argc, char *argv[] ) {
     Network *network;
+    int i;
+
+    srand( time( NULL ) );
 
     if( !processArguments( argc, argv ) ) {
         fprintf( stderr, "Usage: main [-r, -t] [node definition file]\n" );
         exit( EXIT_FAILURE );
     }
 
-    network = makeNetwork();
+    network = retrieveNetwork();
 
-    if( network ) {
-        saveNetwork( network );
+    if( trainingFlag ) {
+        for( i = 0; i < 100; ++i ) {
+            populateNextTestCase( network );
+            train( network, learningRate );
+        }
     }
+
+    persistNetwork( network );
 
     exit( EXIT_SUCCESS );
 }
