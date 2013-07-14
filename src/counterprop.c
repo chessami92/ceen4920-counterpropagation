@@ -107,6 +107,6 @@ static void randomizeWeights( int *weights ) {
     int i;
 
     for( i = 0; i < MAX_WEIGHTS; ++i ) {
-        weights[i] = rand() - ( RAND_MAX >> 1 );
+        weights[i] = rand() % 256;
     }
 }
