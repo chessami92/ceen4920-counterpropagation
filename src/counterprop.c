@@ -17,19 +17,19 @@ int* getOutputs( Network *network ) {
     return &network->outputWeights[winningNode * network->output];
 }
 
-void train( Network *network, int learningRate ) {
+void train( Network *network, int learningRate, int radius ) {
     int winningNode = findWinningNode( network );
     int *winningWeights = getHiddenWeights( winningNode, network );
-    int *winningNeighbors[2];
+    int *winningNeighbor;
     int *outputWeights = getOutputWeights( winningNode, network );
     int i;
 
-    winningNeighbors[0] = getHiddenWeights( winningNode - 1, network );
-    winningNeighbors[1] = getHiddenWeights( winningNode + 1, network );
-
     updateWeights( network->input, learningRate, network->testInputs, winningWeights );
-    for( i = 0; i < 2; ++i ) {
-        updateWeights( network->input, learningRate, network->testInputs, winningNeighbors[i] );
+    for( i = 1; i < radius + 1; ++i ) {
+        winningNeighbor = getHiddenWeights( winningNode - i, network );
+        updateWeights( network->input, learningRate + 1, network->testInputs, winningNeighbor );
+        winningNeighbor = getHiddenWeights( winningNode + i, network );
+        updateWeights( network->input, learningRate + 1, network->testInputs, winningNeighbor );
     }
 
     updateWeights( network->output, learningRate, network->testOutputs, outputWeights );

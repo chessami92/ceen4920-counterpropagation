@@ -6,10 +6,13 @@
 #include "input.h"
 
 extern char *definitionFile;
+extern char *inputFile;
 
 char *definitionFile;
+char *inputFile;
 char trainingFlag;
 int learningRate;
+int radius;
 
 static int processArguments( int argc, char *argv[] ) {
     int i;
@@ -19,11 +22,14 @@ static int processArguments( int argc, char *argv[] ) {
                 case 'd':
                     definitionFile = argv[i + 1];
                     break;
+                case 'i':
+                    inputFile = argv[i + 1];
+                    break;
                 case 'l':
                     learningRate = atoi( argv[i + 1] );
                     break;
                 case 'r':
-                    trainingFlag = 0;
+                    radius = atoi( argv[i + 1] );
                     break;
                 case 't':
                     trainingFlag = 1;
@@ -58,7 +64,7 @@ int main( int argc, char *argv[] ) {
     if( trainingFlag ) {
         for( i = 0; i < 100; ++i ) {
             populateNextTestCase( network );
-            train( network, learningRate );
+            train( network, learningRate, radius );
         }
     }
 
