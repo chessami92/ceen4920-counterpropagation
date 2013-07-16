@@ -64,7 +64,7 @@ static void train_test( void ) {
 
     network->testInputs[0] = 4; network->testInputs[1] = 5;
     network->testOutputs[0] = 8; network->testOutputs[1] = 9;
-    train( network, 1 );
+    train( network, 1, 0 );
 
     assert( network->hiddenWeights[2] == 3 && network->hiddenWeights[3] == 4
     && "Should have updated the Kohonen layer weights" );
