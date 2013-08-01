@@ -12,7 +12,7 @@ static void increasingHistoryCounts( void ) {
 }
 
 static void historyAdjustment( void ) {
-    History history = {{0, 0}, {0, 0}, 0, 0};
+    History history = {{0, 0}, {0, 0}, -1, -1};
     int i;
 
     for( i = 0; i < HISTORY_SIZE; ++i ) {

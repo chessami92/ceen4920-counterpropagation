@@ -10,6 +10,11 @@ void addHistory( History *history, char currentState ) {
     irHistory = history->irHistory;
     currentState = ( currentState ? 1 : 0 );
 
+    history->currentBit = ( history->currentBit + 1 ) % 8;
+    if( !history->currentBit ) {
+        history->currentHistory = ( history->currentHistory + 1 ) % HISTORY_SIZE;
+    }
+
     for( i = 0; i < NUM_HISTORY_COUNTS; ++i ) {
         historyIndex = history->currentHistory - HISTORY_AMOUNTS[i];
         if( historyIndex < 0 ) {
@@ -20,10 +25,5 @@ void addHistory( History *history, char currentState ) {
 
     irHistory[history->currentHistory] <<= 1;
     irHistory[history->currentHistory] |= currentState;
-
-    history->currentBit = ( history->currentBit + 1 ) % 8;
-    if( !history->currentBit ) {
-        history->currentHistory = ( history->currentHistory + 1 ) % HISTORY_SIZE;
-    }
 }
 
