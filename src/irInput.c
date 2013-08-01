@@ -1,10 +1,5 @@
 #include "history.h"
 
-
-
-
-#include <stdio.h>
-
 const int HISTORY_AMOUNTS[NUM_HISTORY_COUNTS] = {8, 16, HISTORY_SIZE};
 
 void addHistory( History *history, char currentState ) {

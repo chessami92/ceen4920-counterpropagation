@@ -3,7 +3,6 @@
 #include <math.h>
 #include <limits.h>
 #include "counterprop.h"
-#include "persistence.h"
 
 static int findWinningNode( Network *network );
 static int* getHiddenWeights( int node, Network *network );
@@ -42,6 +41,7 @@ static int findWinningNode( Network *network ) {
     int winningNode;
 
     minimumError = INT_MAX;
+    winningNode = 0;
 
     for( i = 0; i < network->hidden; ++i ) {
         currentError = 0;

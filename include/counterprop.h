@@ -11,5 +11,4 @@ struct Network {
 int* getOutputs( Network *network );
 void train( Network *network, int learningRate, int radius );
 Network* makeNetwork( int input, int hidden, int output );
-void saveNetwork( Network *network );
 
