@@ -12,7 +12,7 @@ static void increasingHistoryCounts( void ) {
 }
 
 static void historyAdjustment( void ) {
-    History history;
+    History history = {{0, 0}, {0, 0}, 0, 0};
     int i;
 
     for( i = 0; i < HISTORY_SIZE; ++i ) {
@@ -21,7 +21,6 @@ static void historyAdjustment( void ) {
     for( i = 0; i < NUM_HISTORY_COUNTS; ++i ) {
         history.historyCount[i] = 0;
     }
-
     addHistory( &history, 4 );
     assert( history.irHistory[0] == 1 && history.historyCount[0] == 1 );
 
@@ -40,13 +39,25 @@ static void historyAdjustment( void ) {
     }
     assert( history.historyCount[0] == 64 && history.historyCount[1] == 128 && history.historyCount[2] == 129 );
 
-    for( i = 0; i < 5000; ++i ) {
+    for( i = 0; i < 500; ++i ) {
         addHistory( &history, 1 );
     }
-    assert( history.historyCount[0] == 64 && history.historyCount[1] == 128 && history.historyCount[2] == 512 );
+    assert( history.historyCount[0] == 64 && history.historyCount[1] == 128 && history.historyCount[2] == 504 );
 
-    addHistory( &history, 0 );
-    assert( history.historyCount[0] == 63 && history.historyCount[1] == 127 && history.historyCount[2] == 511 );
+    for( i = 0; i < 64; ++i ) {
+        addHistory( &history, 0 );
+    }
+    assert( history.historyCount[0] == 0 && history.historyCount[1] == 64 && history.historyCount[2] == 440 );
+
+    for( i = 0; i < 64; ++i ) {
+        addHistory( &history, 0 );
+    }
+    assert( history.historyCount[0] == 0 && history.historyCount[1] == 0 && history.historyCount[2] == 376 );
+
+    for( i = 0; i < 376; ++i ) {
+        addHistory( &history, 0 );
+    }
+    assert( history.historyCount[0] == 0 && history.historyCount[1] == 0 && history.historyCount[2] == 0 );
 }
 
 int main( void ) {

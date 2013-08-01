@@ -1,23 +1,29 @@
 #include "history.h"
 
-const int HISTORY_AMOUNTS[NUM_HISTORY_COUNTS] = {8, 16, HISTORY_SIZE};
+const int HISTORY_AMOUNTS[NUM_HISTORY_COUNTS] = {8, 16, HISTORY_SIZE - 1};
 
 void addHistory( History *history, char currentState ) {
     int i;
     unsigned char *irHistory;
-    char carryIn, carryOut;
+    int historyIndex;
 
     irHistory = history->irHistory;
-    carryIn = ( currentState ? 1 : 0 );
+    currentState = ( currentState ? 1 : 0 );
 
     for( i = 0; i < NUM_HISTORY_COUNTS; ++i ) {
-        history->historyCount[i] += carryIn - ( irHistory[HISTORY_AMOUNTS[i] - 1    ] >> 7 );
+        historyIndex = history->currentHistory - HISTORY_AMOUNTS[i];
+        if( historyIndex < 0 ) {
+            historyIndex += HISTORY_SIZE;
+        }
+        history->historyCount[i] += currentState - ( ( irHistory[historyIndex] >> ( 7 - history->currentBit ) ) & 0x01 );
     }
 
-    for( i = 0; i < HISTORY_SIZE; ++i ) {
-        carryOut = irHistory[i] >> 7;
-        irHistory[i] = irHistory[i] << 1 | carryIn;
-        carryIn = carryOut;
+    irHistory[history->currentHistory] <<= 1;
+    irHistory[history->currentHistory] |= currentState;
+
+    history->currentBit = ( history->currentBit + 1 ) % 8;
+    if( !history->currentBit ) {
+        history->currentHistory = ( history->currentHistory + 1 ) % HISTORY_SIZE;
     }
 }
 

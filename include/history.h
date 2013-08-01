@@ -6,6 +6,8 @@ typedef struct History History;
 struct History {
     unsigned char irHistory[HISTORY_SIZE];
     unsigned int historyCount[NUM_HISTORY_COUNTS];
+    unsigned char currentHistory;
+    unsigned char currentBit;
 };
 
 void addHistory( History *history, char currentState );
